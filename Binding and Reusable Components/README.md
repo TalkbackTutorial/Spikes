@@ -4,6 +4,6 @@ This demonstrates how to implement binding into activities and xml components. I
 
 Read more below.
 
-https://developer.android.com/topic/libraries/data-binding
+https://developer.android.com/topic/libraries/data-binding/expressions
 
 https://developer.android.com/training/improving-layouts/reusing-layouts

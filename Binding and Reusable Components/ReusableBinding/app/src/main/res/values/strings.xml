@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">ReusableBinding</string>
+    <string name="title">Hello World!</string>
+    <string name="name_label">Name: </string>
+    <string name="age_label">Age: </string>
+    <string name="button_label">Do Something</string>
+    <string name="toast">Name: %1$s and Age: %2$d</string>
 </resources>
