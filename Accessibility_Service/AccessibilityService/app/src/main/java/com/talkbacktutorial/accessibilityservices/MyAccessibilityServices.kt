@@ -12,5 +12,4 @@ class MyAccessibilityServices : AccessibilityService(){
     override fun onAccessibilityEvent(event: AccessibilityEvent?) {
 
     }
-
 }
