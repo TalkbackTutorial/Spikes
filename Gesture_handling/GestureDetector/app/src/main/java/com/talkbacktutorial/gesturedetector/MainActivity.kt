@@ -9,7 +9,6 @@ import com.talkbacktutorial.gesturedetector.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
 
-    private val DEBUG_TAG: String = "Debug"
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,10 +23,18 @@ class MainActivity : AppCompatActivity() {
 
         return when (action) {
             MotionEvent.ACTION_DOWN -> {
-                binding.gestureLabel.setText("Action Down")
+                setGestureText("Action Down")
+                true
+            }
+            MotionEvent.ACTION_UP -> {
+                setGestureText("Action Up")
                 true
             }
             else -> super.onTouchEvent(event)
         }
+    }
+
+    private fun setGestureText(text: String) {
+        binding.gestureLabel.setText(text)
     }
 }
