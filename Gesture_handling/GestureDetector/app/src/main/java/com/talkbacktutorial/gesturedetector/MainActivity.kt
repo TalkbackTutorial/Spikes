@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.MotionEvent
 import androidx.core.view.MotionEventCompat
 import com.talkbacktutorial.gesturedetector.databinding.ActivityMainBinding
+import kotlin.math.round
 
 class MainActivity : AppCompatActivity() {
 
@@ -29,8 +30,7 @@ class MainActivity : AppCompatActivity() {
                 any intermediate points since the last DOWN or MOVE event.
                  */
                 // Could use this to create our own custom gestures?
-                Log.d("x: ", "${event?.getRawX().toString()} \n")
-                Log.d("y: ", event?.getRawY().toString())
+                setGestureText("x: ${event?.rawX.toString()} \n y: ${event?.rawY.toString()}")
                 true
             }
             MotionEvent.ACTION_DOWN -> {
