@@ -13,21 +13,35 @@ import kotlin.math.abs
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-    private lateinit var detector: GestureDetector
+    private lateinit var swipeTouchListener: OnSwipeTouchListener
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        this.detector = GestureDetector(this, GestureListener())
+        this.swipeTouchListener = OnSwipeTouchListener(this)
+            .setSwipeUp(::onSwipeUp)
+            .setSwipeDown(::onSwipeDown)
+            .setSwipeLeft(::onSwipeLeft)
+            .setSwipeRight(::onSwipeRight)
+        /*
+        Could also do:
+
+        this.swipeTouchListener = OnSwipeTouchListener(this)
+            .setSwipeUp {
+                // Do things here
+            }
+
+        The lesson here is lambda expressions are very useful
+         */
     }
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
 
         val action: Int = event?.action ?: return false
 
-        this.detector.onTouchEvent(event)
+        this.swipeTouchListener.callOnEvent(event)
 
         return when (action) {
             MotionEvent.ACTION_MOVE -> {
@@ -54,41 +68,6 @@ class MainActivity : AppCompatActivity() {
 
     private fun setGestureText(text: String) {
         binding.onTouchEventLabel.text = text
-    }
-
-    inner class GestureListener: GestureDetector.SimpleOnGestureListener() {
-
-        private val SWIPE_THRESHOLD = 100
-        private val SWIPE_VELOCITY_THRESHOLD = 100
-
-        override fun onFling(
-            downMotionEvent: MotionEvent?,
-            moveMotionEvent: MotionEvent?,
-            velocityX: Float,
-            velocityY: Float
-        ): Boolean {
-            val xDelta: Float = moveMotionEvent?.x?.minus(downMotionEvent!!.x) ?: 0.0F
-            val yDelta: Float = moveMotionEvent?.y?.minus(downMotionEvent!!.y) ?: 0.0F
-            if (abs(xDelta) > abs(yDelta)) {
-                if (abs(xDelta) > SWIPE_THRESHOLD && abs(velocityX) > SWIPE_VELOCITY_THRESHOLD) {
-                    if (xDelta > 0) onSwipeRight()
-                    else onSwipeLeft()
-                    return true
-                } else {
-                    super.onFling(downMotionEvent, moveMotionEvent, velocityX, velocityY)
-                }
-            } else {
-                if (abs(yDelta) > SWIPE_THRESHOLD && abs(velocityY) > SWIPE_VELOCITY_THRESHOLD) {
-                    if (yDelta > 0) onSwipeDown()
-                    else onSwipeUp()
-                    return true
-                } else {
-                    super.onFling(downMotionEvent, moveMotionEvent, velocityX, velocityY)
-                }
-            }
-            return false
-        }
-
     }
 
     fun onSwipeRight() {
