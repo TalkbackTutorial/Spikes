@@ -20,7 +20,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
 
-        val action: Int = MotionEventCompat.getActionMasked(event)
+        val action: Int = event?.action ?: return false
 
         return when (action) {
             MotionEvent.ACTION_MOVE -> {
@@ -30,7 +30,7 @@ class MainActivity : AppCompatActivity() {
                 any intermediate points since the last DOWN or MOVE event.
                  */
                 // Could use this to create our own custom gestures?
-                setGestureText("x: ${event?.rawX.toString()} \n y: ${event?.rawY.toString()}")
+                setGestureText("x: ${event.rawX} \n y: ${event.rawY}")
                 true
             }
             MotionEvent.ACTION_DOWN -> {
@@ -46,6 +46,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setGestureText(text: String) {
-        binding.gestureLabel.setText(text)
+        binding.gestureLabel.text = text
     }
 }
