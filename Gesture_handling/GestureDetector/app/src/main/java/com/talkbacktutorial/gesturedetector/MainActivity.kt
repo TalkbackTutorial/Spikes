@@ -22,6 +22,17 @@ class MainActivity : AppCompatActivity() {
         val action: Int = MotionEventCompat.getActionMasked(event)
 
         return when (action) {
+            MotionEvent.ACTION_MOVE -> {
+                /*
+                A change has occurred during the touch event (between ACTION_DOWN and ACTION_UP).
+                An ACTION_MOVE contains the pointer's most recent x and y coordinates along with
+                any intermediate points since the last DOWN or MOVE event.
+                 */
+                // Could use this to create our own custom gestures?
+                Log.d("x: ", "${event?.getRawX().toString()} \n")
+                Log.d("y: ", event?.getRawY().toString())
+                true
+            }
             MotionEvent.ACTION_DOWN -> {
                 setGestureText("Action Down")
                 true
