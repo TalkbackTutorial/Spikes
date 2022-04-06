@@ -4,8 +4,11 @@ import android.os.Bundle
 import android.provider.Settings
 import android.provider.Settings.SettingNotFoundException
 import android.speech.tts.TextToSpeech
+import android.speech.tts.UtteranceProgressListener
+import android.view.View
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import java.util.*
 
@@ -29,6 +32,27 @@ class MainActivity : AppCompatActivity() {
                 } catch (e: SettingNotFoundException) { /* Default value are set */ }
             }
         }
+
+        textToSpeech.setOnUtteranceProgressListener(object : UtteranceProgressListener() {
+            override fun onStart(p0: String?) {
+                Toast.makeText(this@MainActivity, "Started Speaking", Toast.LENGTH_SHORT).show()
+            }
+
+            override fun onDone(utteranceId: String?) {
+                //findViewById<Button>(R.id.button).visibility = View.GONE
+                runOnUiThread {
+                    Toast.makeText(
+                        this@MainActivity,
+                        "Finished speaking",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+
+            override fun onError(p0: String?) {
+
+            }
+        })
 
         findViewById<Button>(R.id.button).setOnClickListener {
             val text = findViewById<TextView>(R.id.text).text.toString()
