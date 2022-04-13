@@ -1,26 +1,47 @@
 package com.talkbacktutorial.gesturedetector
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.GestureDetector
 import android.view.MotionEvent
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.MotionEventCompat
 import com.talkbacktutorial.gesturedetector.databinding.ActivityMainBinding
-import kotlin.math.round
+import kotlin.math.abs
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
+    private lateinit var swipeTouchListener: OnSwipeTouchListener
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        this.swipeTouchListener = OnSwipeTouchListener(this)
+            .setSwipeUp(::onSwipeUp)
+            .setSwipeDown(::onSwipeDown)
+            .setSwipeLeft(::onSwipeLeft)
+            .setSwipeRight(::onSwipeRight)
+        /*
+        Could also do:
+
+        this.swipeTouchListener = OnSwipeTouchListener(this)
+            .setSwipeUp {
+                // Do things here
+            }
+
+        The lesson here is lambda expressions are very useful
+         */
     }
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
 
-        val action: Int = MotionEventCompat.getActionMasked(event)
+        val action: Int = event?.action ?: return false
+
+        this.swipeTouchListener.callOnEvent(event)
 
         return when (action) {
             MotionEvent.ACTION_MOVE -> {
@@ -49,7 +70,8 @@ class MainActivity : AppCompatActivity() {
                     |   .      |
                     |_____T____|
                  */
-                setGestureText("x: ${event?.rawX.toString()} \n y: ${event?.rawY.toString()}")
+                // Could use this to create our own custom gestures?
+                setGestureText("x: ${event.rawX} \n y: ${event.rawY}")
                 true
             }
             MotionEvent.ACTION_DOWN -> {
@@ -65,6 +87,23 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setGestureText(text: String) {
-        binding.gestureLabel.setText(text)
+        binding.onTouchEventLabel.text = text
     }
+
+    fun onSwipeRight() {
+        binding.gestureDetectorLabel.text = "Swiped Right"
+    }
+
+    fun onSwipeLeft() {
+        binding.gestureDetectorLabel.text = "Swiped Left"
+    }
+
+    fun onSwipeUp() {
+        binding.gestureDetectorLabel.text = "Swiped Up"
+    }
+
+    fun onSwipeDown() {
+        binding.gestureDetectorLabel.text = "Swiped Down"
+    }
+
 }

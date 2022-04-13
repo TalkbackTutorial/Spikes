@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Accessibility Interceptor</string>
+    <string name="focus_msg">I am in focus</string>
+    <string name="no_focus_msg">I am not in focus</string>
+</resources>
